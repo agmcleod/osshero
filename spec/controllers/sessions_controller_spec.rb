@@ -3,7 +3,7 @@ require 'spec_helper'
 describe SessionsController do
   describe "#create" do
     before :each do
-      request.env['omniauth.auth'] = {'uid' => Factory.next(:uid) }
+      request.env['omniauth.auth'] = {'uid' => FactoryGirl.build(:user).uid }
     end
 
     it "should redirect to the home page" do
@@ -12,17 +12,17 @@ describe SessionsController do
     end
 
     it "should try to find a user based on the provider and uid" do
-      User.should_receive(:find_or_create_from_omniauth).and_return(Factory.build(:user))
+      User.should_receive(:find_or_create_from_omniauth).and_return(FactoryGirl.build(:user))
       post :create, :provider => 'github'
     end
 
     context "Existing user session" do
       before :each do
-        sign_in Factory.create :user
+        sign_in FactoryGirl.create :user
       end
 
       it "should not create a new authentication" do
-        request.env['omniauth.auth'] = {'uid' => Factory.create(:user).uid }
+        request.env['omniauth.auth'] = {'uid' => FactoryGirl.create(:user).uid }
         lambda do
           post :create, :provider => 'github'
         end.should_not change(User, :count)

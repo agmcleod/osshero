@@ -8,7 +8,7 @@ describe User do
     before(:each) do
       @provider = 'github'
       @auth = {
-        'uid' => Factory.next(:uid),
+        'uid' => FactoryGirl.build(:user).uid,
         'user_info' => { 'nickname' => 'nick',
                          'urls' => { 'GitHub' => 'http://github.com/nick' },
                          'email' => 'nick@nick.com' }
@@ -33,7 +33,7 @@ describe User do
     end
 
     it "should return an existing user if one already exists" do
-      user = Factory.create(:user)
+      user = FactoryGirl.create(:user)
 
       lambda do
         User.find_or_create_from_omniauth(user.provider, 'uid' => user.uid)
