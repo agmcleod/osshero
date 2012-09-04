@@ -1,10 +1,5 @@
 /*
  * FIXME: Introduce SCSS & Sprockets
  *= require_self
- *= require komika/komika
- *= require screen
- *= require print
- *= require ie
- *= require mixins
  *= require_tree . 
 */
